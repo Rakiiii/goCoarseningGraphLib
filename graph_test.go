@@ -68,12 +68,21 @@ func TestGetCoarseningGraph( t *testing.T){
 
 	graphnc.HungryNumIndependent()
 
+	checkFlag := true
+
 	rightorder := []int{2,3,0,1,5,6,7,4}
 	graphnc.RenumVertex(rightorder)
 
-	testGraph := graphnc.GetCoarseningGraph(2)
+	testGraph,ord := graphnc.GetCoarseningGraph(2,nil)
+	rightorder = []int{0,1,2,3,6,4,5,7}
+	for i,v := range ord{
+		if rightorder[i] != v{
+			t.Error("Wrong order:",v," expexted:",rightorder[i])
+			checkFlag = false
+		}
+	}
 
-	checkFlag := true
+	
 
 	for i := 0 ; i < testGraph.AmountOfVertex(); i++{
 		for j,e := range testGraph.GetEdges(i){

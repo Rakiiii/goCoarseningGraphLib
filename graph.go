@@ -17,13 +17,14 @@ func (g *Graph) SetEdgesWeight(newWeightMatrix [][]float64){
 }
 
 //GetCoarseningGraph returns coarsening grpah with extra @n independent vertex
-func (g *Graph)GetCoarseningGraph(n int)*Graph{	
+//@oldOrd must be nil for call
+func (g *Graph)GetCoarseningGraph(n int,oldOrd []int)(*Graph,[]int){	
 	if g.GetAmountOfIndependent() <= 0{
-		return nil
+		return nil,nil
 	}
 	//if amount of extra independent vertex is 0 then stop recursion and return this graph
 	if n <= 0 {
-		return g
+		return g,oldOrd
 	}else{
 
 		//lowest weight for vertex
@@ -54,7 +55,7 @@ func (g *Graph)GetCoarseningGraph(n int)*Graph{
 
 		//if all vertex are independent return this graph
 		if vertex == -1{
-			return g
+			return g,oldOrd
 		}
 
 		//create set of edges for deleting from graph
@@ -96,8 +97,15 @@ func (g *Graph)GetCoarseningGraph(n int)*Graph{
 		//update amount of independent vertex
 		newGraph.SetAmountOfIndependent(g.GetAmountOfIndependent()+1)
 
+		if oldOrd == nil{
+			oldOrd = newOrder
+		}else{
+			for i,v := range newOrder{
+				newOrder[i] = oldOrd[v]
+			}
+		}
 		//recursive call
-		return newGraph.GetCoarseningGraph(n-1)
+		return newGraph.GetCoarseningGraph(n-1,append(oldOrd[:g.GetAmountOfIndependent()], newOrder[g.GetAmountOfIndependent():]...))
 	}
 }
 
