@@ -6,10 +6,14 @@ github.com/Rakiiii/goBipartitonLocalSearch v0.5.2 h1:hc+lzrPh4iZOYggLEtoHwfC16i1
 github.com/Rakiiii/goBipartitonLocalSearch v0.5.2/go.mod h1:Linmf+HYOwxhQFscf5lZWDuJZFrfiAUnx2bHTR+VwJM=
 github.com/Rakiiii/goBipartitonLocalSearch v0.5.3 h1:Cy03HD1J7dPevjxLXOANrTW96O2ZALF6AlMs/FbzqOw=
 github.com/Rakiiii/goBipartitonLocalSearch v0.5.3/go.mod h1:Linmf+HYOwxhQFscf5lZWDuJZFrfiAUnx2bHTR+VwJM=
+github.com/Rakiiii/goBipartitonLocalSearch v0.5.5 h1:Yq1LP8IETVzmcv5kzS5vReJQZ2gTiNzyv6yvpJ5l3kI=
+github.com/Rakiiii/goBipartitonLocalSearch v0.5.5/go.mod h1:pk2c62DBilpxilTjpbaAjbyIOC2YOCKO2CW0/R1fP1A=
 github.com/Rakiiii/goGraph v0.2.4 h1:lR6LyuVySOCb25rWZBr/XXPPS7KIaPuO8JjJ2xD3PhM=
 github.com/Rakiiii/goGraph v0.2.4/go.mod h1:bYAV6bGI3W/Q2pbO8wpCVywSbfjNNbvQ41WEdop3YAI=
 github.com/Rakiiii/goGraph v0.3.0 h1:uQ+34dDdDgTXBFt7jsCjyq3DdXOYXi5hijE7r2B40Ds=
 github.com/Rakiiii/goGraph v0.3.0/go.mod h1:KvIo/2YIIHJOCeMhZrVkymK9s2PSsjUJ3zh0EOEy1yU=
+github.com/Rakiiii/goGraph v0.3.1 h1:KzwaZu5ljzS607b6jS2BttNwixFn3WUQj1cqD4v1J8M=
+github.com/Rakiiii/goGraph v0.3.1/go.mod h1:KvIo/2YIIHJOCeMhZrVkymK9s2PSsjUJ3zh0EOEy1yU=
 github.com/Rakiiii/goPair v0.0.2/go.mod h1:Jjb6f/SlM8GV5ySxvfySDs8UCOjtx5CJtmUoffpLD9I=
 github.com/Rakiiii/goPair v0.0.3 h1:96VjJnyvRpueXMZdnZ5HDOJdFO3mNOpCYsxTzIdpq8M=
 github.com/Rakiiii/goPair v0.0.3/go.mod h1:Jjb6f/SlM8GV5ySxvfySDs8UCOjtx5CJtmUoffpLD9I=
