@@ -12,13 +12,20 @@ const (
 	testdir = "Testgraphs"
 )
 
-func TestGetGraphWithOutEdge(t *testing.T){
-	
-	fmt.Println("Start TestGetGraphWithOutEdge")
+func TestDir(t *testing.T){
+	fmt.Println("Start TestDir")
 	if err := os.Chdir(testdir);err != nil{
 		t.Error("Directory for graphs is not found")
 		return
+	}else{
+		fmt.Println("TestDir=[ok]")
 	}
+}
+
+func TestGetGraphWithOutEdge(t *testing.T){
+	
+	fmt.Println("Start TestGetGraphWithOutEdge")
+
 	var graph Graph
 	//testgraph
 	if err := graph.ParseGraph("GetGraphWithOutEdge"); err != nil {
@@ -307,5 +314,28 @@ func TestGetHungryContractedGraphNI(t *testing.T){
 
 	if checkFlag{
 		fmt.Println("GetHungryContractedGraphNI=[ok]")
+	}
+}
+
+func TestUncontractedGraphBipartition(t *testing.T){
+	fmt.Println("Start TestUncontractedGraphBipartition")
+
+	set := [][]int{{0,1,2},{3,4,5},{6},{7}}
+	testVec := []bool{true,false,true,false}
+	resultVec := []bool{true,true,true,false,false,false,true,false}
+
+	testVec = UncontractedGraphBipartition(set,testVec)
+
+	checkFlag := true
+
+	for i,j := range testVec{
+		if j != resultVec[i]{
+			t.Error("Wrong value:",j," at position:",i," expected:",resultVec[i])
+			checkFlag = false
+		}
+	}
+
+	if checkFlag{
+		fmt.Println("TestUncontractedGraphBipartition=[ok]")		
 	}
 }
