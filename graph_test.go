@@ -339,3 +339,31 @@ func TestUncontractedGraphBipartition(t *testing.T){
 		fmt.Println("TestUncontractedGraphBipartition=[ok]")		
 	}
 }
+
+func TestHungryFixBipartitionDisbalance(t *testing.T){
+	fmt.Println("Start TestHungryFixBipartitionDisbalance")
+
+	var graphStart Graph
+	if err := graphStart.ParseGraph("HungryFixBipartitionDisbalance"); err != nil {
+		log.Println(err)
+		return
+	}
+
+	startVec := []bool{false,false,true,true,true,true,true,false}
+	resultVec := []bool{false,false,true,true,false,true,true,false}
+
+	testVec := graphStart.HungryFixBipartitionDisbalance(startVec,4)
+
+	checkFlag := true
+
+	for i,j := range testVec{
+		if j != resultVec[i]{
+			t.Error("Wrong value:",j," at position:",i," expected:",resultVec[i])
+			checkFlag = false
+		}
+	}
+
+	if checkFlag{
+		fmt.Println("TestHungryFixBipartitionDisbalance=[ok]")
+	}
+}
