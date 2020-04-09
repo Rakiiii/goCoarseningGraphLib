@@ -6,6 +6,7 @@ import(
 	"log"
 	"os"
 	gopair "github.com/Rakiiii/goPair"
+	bipartitonlocalsearchlib "github.com/Rakiiii/goBipartitonLocalSearch"
 )
 
 const (
@@ -366,4 +367,40 @@ func TestHungryFixBipartitionDisbalance(t *testing.T){
 	if checkFlag{
 		fmt.Println("TestHungryFixBipartitionDisbalance=[ok]")
 	}
+}
+
+func TestCuatom(t *testing.T){
+	t.Skip()
+	fmt.Println("Start TestCustom")
+	var graph Graph
+	if err := graph.ParseGraph("../graph"); err != nil {
+		log.Println(err)
+		return
+	}
+
+	sol := &bipartitonlocalsearchlib.Solution{Value:-1,Vector:make([]bool,graph.AmountOfVertex()),Gr:&graph.Graph} 
+	sol.Init(&graph.Graph)
+
+	depSize := 10
+			
+			fmt.Println("start mark serach with hungry ni contracted graph")
+			groupSize := graph.AmountOfVertex()/2
+			contractgraph := Graph{Graph:graph.Graph}
+			coarsedNumber := graph.AmountOfVertex()-graph.GetAmountOfIndependent() - depSize
+			fmt.Println("coarsed number is:",coarsedNumber)
+			if coarsedNumber > 0{
+				contractedGraph,contr := contractgraph.GetHungryContractedGraphNI(coarsedNumber)
+				
+				subOrd := contractedGraph.HungryNumIndependent()
+
+
+				mark := bipartitonlocalsearchlib.LSPartiotionAlgorithmNonRec(&contractedGraph.Graph, nil, groupSize)
+ 
+				mark.Vector = bipartitonlocalsearchlib.TranslateResultVector(mark.Vector,subOrd)
+
+				fmt.Println("cont:",contr)
+
+				//need to fix disbalance
+				sol.Vector = contractgraph.HungryFixBipartitionDisbalance(UncontractedGraphBipartition(contr,mark.Vector),groupSize)
+			}
 }

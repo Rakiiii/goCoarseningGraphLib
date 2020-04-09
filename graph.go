@@ -394,6 +394,8 @@ func recursiveCheck(slice [][]int,check int)int{
 
 func contractVertex(set [][]int,v1 int,v2 int){
 	switch{
+	case set[v1][0] == set[v2][0]:
+		return
 	case set[v1][0] == v1 && set[v2][0] == v2:
 		set[v1] = appendWithOutRepeat(set[v1],set[v2])
 		set[v2] = []int{v1}
