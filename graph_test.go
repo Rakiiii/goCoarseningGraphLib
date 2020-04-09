@@ -4,14 +4,24 @@ import(
 	"testing"
 	"fmt"
 	"log"
+	"os"
 	gopair "github.com/Rakiiii/goPair"
+)
+
+const (
+	testdir = "Testgraphs"
 )
 
 func TestGetGraphWithOutEdge(t *testing.T){
 	
 	fmt.Println("Start TestGetGraphWithOutEdge")
+	if err := os.Chdir(testdir);err != nil{
+		t.Error("Directory for graphs is not found")
+		return
+	}
 	var graph Graph
-	if err := graph.ParseGraph("testgraph"); err != nil {
+	//testgraph
+	if err := graph.ParseGraph("GetGraphWithOutEdge"); err != nil {
 		log.Println(err)
 		return
 	}
@@ -31,7 +41,8 @@ func TestGetGraphWithOutEdge(t *testing.T){
 	edges[3].Second = 6
 
 	var graph2 Graph
-	if err := graph2.ParseGraph("testgraphed"); err != nil {
+	//testgraphed
+	if err := graph2.ParseGraph("GetGraphWithOutEdgeResult"); err != nil {
 		log.Println(err)
 		return
 	}
@@ -56,12 +67,14 @@ func TestGetGraphWithOutEdge(t *testing.T){
 func TestGetCoarseningGraph( t *testing.T){
 	fmt.Println("Start TestGetCoarseningGraph")
 	var graphnc Graph
-	if err := graphnc.ParseGraph("testgraphnc"); err != nil {
+	//testgraphnc
+	if err := graphnc.ParseGraph("GetCoarseningGraph"); err != nil {
 		log.Println(err)
 		return
 	}
 	var graphc Graph
-	if err := graphc.ParseGraph("testgraphc"); err != nil {
+	//testgraphc
+	if err := graphc.ParseGraph("GetCoarseningGraphResult"); err != nil {
 		log.Println(err)
 		return
 	}
@@ -95,5 +108,204 @@ func TestGetCoarseningGraph( t *testing.T){
 
 	if checkFlag{
 		fmt.Println("TestGetCoarseningGraph=[ok]")
+	}
+}
+
+func TestAppenWithOutRepeat(t *testing.T){
+	fmt.Println("Start TestAppendWithOutRepeat")
+
+	slice1 := []int{1,2,3,4}
+	slice2 := []int{3,4,1,6,5,4}
+	right := []int{1,2,3,4,6,5}
+
+	res := appendWithOutRepeat(slice1,slice2)
+
+	checkFlag := true
+
+	for i,j := range res{
+		if j != right[i]{
+			t.Error("Wrong value:",j," at position:",i," expected:",right[i])
+			checkFlag = false
+		}
+	}
+
+	if checkFlag{
+		fmt.Println("TestAppendWithOutRepeat=[ok]")
+	}
+}
+
+func TestCountSliceOverlap(t *testing.T){
+	fmt.Println("Start TestCountSliceOverlap")
+
+	slice1 := []int{1,2,4,5}
+	slice2 := []int{4,6,8,12,1}
+
+	if countSliceOverlap(slice1,slice2) != 2{
+		t.Error("Wrong size of slice overlap:",countSliceOverlap(slice1,slice2)," expected:2")
+	}else{
+		fmt.Println("TestCountSliceOverlap=[ok]")
+	}
+}
+
+func TestRecursiveCheck(t *testing.T){
+	fmt.Println("Test TestRecursiveCheck")
+	slice := [][]int{{0,2,3},{2},{4},{3,4,5},{0}}
+
+	if recursiveCheck(slice,1) != 0{
+		t.Error("Wrong recursive check:",recursiveCheck(slice,1)," epected:0")
+	}else{
+		fmt.Println("TestRecursiveCheck=[ok]")
+	}
+}
+
+func TestContractVertex(t *testing.T){
+	fmt.Println("Start TestContractVertex")
+	slice := [][]int{{0,2,3},{1,2,4},{4},{5},{4,6},{5,7},{6,9},{8},{8,10},{10},{10,12},{11,13}}
+	resultSlice := [][]int{{0,2,3,1,4},{0},{4},{5},{4,6,5,7},{4},{6,9,8,10},{8},{6},{10},{10,12,11,13},{10}}
+
+	contractVertex(slice,0,1)
+	contractVertex(slice,2,3)
+	contractVertex(slice,6,7)
+	contractVertex(slice,9,11)
+
+	checkFlag := true
+	for i1,j1 := range slice{
+		for i2,j2 := range j1{
+			if j2 != resultSlice[i1][i2]{
+				t.Error("Wrong value:",j2," at position:[",i1,"][",i2,"] expected:",resultSlice[i1][i2])
+				checkFlag = false
+			}
+		}
+	}
+
+	if checkFlag{
+		fmt.Println("TestContractVertex=[ok]")
+	}
+}
+
+func TestIsContains(t *testing.T){
+	fmt.Println("Start TestIsContains")
+
+	slice := []int{1,2,3,4,5,6,2}
+
+	switch{
+	case !isContains(slice,2):
+		t.Error("slice contains 2")
+	case !isContains(slice,3):
+		t.Error("slice contains 3")
+	case !isContains(slice,6):
+		t.Error("slice contains 6")
+	case isContains(slice,10):
+		t.Error("slice doesn't contain 10")
+	default:
+		fmt.Println("TestIsContains=[ok]")
+	}
+}
+
+func TestRemoveRepeat(t *testing.T){
+	fmt.Println("Start TestRemoveRepeat")
+
+	slice := []int{1,2,4,5,1,4,2,6}
+	right := []int{1,2,4,5,6}
+
+	slice = removeRepeat(slice)
+
+	checkFlag := true
+	for i,j := range slice{
+		if j != right[i]{
+			t.Error("Wrong value:",j," at position:",i," expected:",right[i])
+			checkFlag = false
+		}
+	}
+	if checkFlag{
+		fmt.Println("TestRemoveRepeat=[ok]")
+	}
+}
+
+func TestContractVertexGraph(t *testing.T){
+	fmt.Println("Start TestContractVertexGraph")
+
+	var graphStart Graph
+	if err := graphStart.ParseGraph("ContractVertex"); err != nil {
+		log.Println(err)
+		return
+	}
+	var graphRes Graph
+	if err := graphRes.ParseGraph("ContractVertexResult"); err != nil {
+		log.Println(err)
+		return
+	}	
+
+	ordRes := [][]int{{0,6,5},{1},{2,3},{4},{7},{8},{9}}
+	
+	set := [][]int{{0,6,5},{1},{2,3},{2},{4},{0},{0},{7},{8},{9}}
+
+	testGraph,testOrd := graphStart.contractVertex(set)
+
+	checkFlag := true
+
+	for i := 0 ; i < testGraph.AmountOfVertex();i ++{
+		for j,v := range testGraph.GetEdges(i){
+			if v != graphRes.GetEdges(i)[j]{
+				t.Error("Wrong edge:(",i,",",v,") expected:(",i,",",graphRes.GetEdges(i)[j],")")
+				checkFlag = false
+			}
+		}
+	} 
+
+	for i,s := range testOrd{
+		for j,v := range s{
+			if v != ordRes[i][j]{
+				t.Error("Wrong vertex subset:",v," at position:[",i,",",j,"] expected:",ordRes[i][j])
+				checkFlag = false
+			}
+		}
+	}
+
+	if checkFlag{
+		fmt.Println("ContractVertexGraph=[ok]")
+	}
+}
+
+func TestGetHungryContractedGraphNI(t *testing.T){
+	fmt.Println("Start GetHungryContractedGraphNI")
+
+	var graphStart Graph
+	if err := graphStart.ParseGraph("GetHungryContractedGraphNI"); err != nil {
+		log.Println(err)
+		return
+	}
+	var graphRes Graph
+	if err := graphRes.ParseGraph("GetHungryContractedGraphNIResult"); err != nil {
+		log.Println(err)
+		return
+	}	
+
+	ordRes := [][]int{{0,1},{2},{3},{4,5},{6},{7}}
+
+	testGraph,testOrd := graphStart.GetHungryContractedGraphNI(2)
+
+	checkFlag := true
+
+	for i := 0 ; i < testGraph.AmountOfVertex();i ++{
+		for j,v := range testGraph.GetEdges(i){
+			if v != graphRes.GetEdges(i)[j]{
+				t.Error("Wrong edge:(",i,",",v,") expected:(",i,",",graphRes.GetEdges(i)[j],")")
+				checkFlag = false
+			}
+		}
+	} 
+
+	for i,s := range testOrd{
+		for j,v := range s{
+			if v != ordRes[i][j]{
+				t.Error("Wrong vertex subset:",v," at position:[",i,",",j,"] expected:",ordRes[i][j])
+				checkFlag = false
+			}
+		}
+	}
+
+	if checkFlag{
+		fmt.Println("GetHungryContractedGraphNI=[ok]")
 	}
 }

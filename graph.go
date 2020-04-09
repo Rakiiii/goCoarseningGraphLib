@@ -2,8 +2,11 @@ package coarseninggraph
 
 import (
 	lspartitioninglib "github.com/Rakiiii/goBipartitonLocalSearch"
+	gosort "github.com/Rakiiii/goSort"
 	gopair "github.com/Rakiiii/goPair"
+	gotuple "github.com/Rakiiii/goTuple"
 	"math"	
+	//"fmt"
 )
 
 type Graph struct{
@@ -109,6 +112,144 @@ func (g *Graph)GetCoarseningGraph(n int,oldOrd []int)(*Graph,[]int){
 	}
 }
 
+//contractVertex returns graph with vertex from @set connected and matrix of reconnecting vertex
+//@set must have such structure: first cord is number of vertex in previous graph,
+//and this slice contains group of vertex for connections to vertex with
+//number first cord, if no vertex must be connected to vertex slice dhould contain only this vertex number
+//if vertex must be connected to another vertex slice must contain number of vertex to which it must be connected
+func (g *Graph)contractVertex(set [][]int)(*Graph,[][]int){
+	n := 0
+
+	//count amount of vertex that will be contarcted
+	for i,j := range set{
+		if j[0] == i{
+			n++
+		}
+	}
+
+
+	//init slice for recontacting vertex
+	fixed := make([][]int,n)
+	//init slice for reordering vertex
+	ord := make([]int,g.AmountOfVertex())
+	//itterator for right pos in @fixed
+	it := 0
+
+	//look whole @set
+	//remove vertex which will be contarcted
+	for i,j := range set{
+		//if vertex poininting on it self, then other vertex will be contacted to it
+		if j[0] == i{
+			//we must save it
+			fixed[it] = j
+			//it must be have its own number
+			ord[i] = it
+			//move itterator
+			it++
+		}else{
+			//if vertex will be contarcted with another one, it will have non personal number later
+			ord[i] = -1
+		}
+	} 
+
+	//set for contracted vertex thei numbers
+	//they must have the same number as vertex to which they will be contarcted
+	for i,j := range ord{
+		if j == -1{
+			ord[i] = ord[recursiveCheck(set,i)]
+		}
+	}
+
+
+	//init graph with contracted vertex
+	newGraph := new(Graph)
+	newGraph.Init(len(fixed),0)
+
+	//add edges to this grpah
+	for i,j := range fixed{
+		//init slice of edges
+		edges := make([]int,0)
+
+		//check all edges of vertex that will be contracted
+		for _,v := range j{
+		//edges of vertex @v in source graph
+		sourceEdges := g.GetEdges(v)
+		aped := make([]int,0)
+		//remove all edges with contacted vertex
+		for _,e := range sourceEdges{
+			if !isContains(j,e){
+				aped = append(aped,e)
+			}
+		}
+
+		//renum vertex of prev graph with new order
+		for i1,j1 := range aped{
+			aped[i1] = ord[j1]
+		}
+
+		//remove vertex repeat
+		aped = removeRepeat(aped)
+
+		//add reworked edges of vertex @v from source graph to set of edges of vertex @i in new graph
+		edges = gosort.QuicksortInt(appendWithOutRepeat(edges,aped))
+		}
+
+		//add edges to graph
+		newGraph.AddEdgesToVertex(i,edges)
+	}
+
+	return newGraph,fixed
+}
+
+//GetHungryContractedGraphNI returns pointer to graph of type Graph that composed from set of contaracted vertex
+//and matrix for uncotractiong vertex matrix strucutre:line number is num of vertex in new graph,and line it self contains 
+//number of vertex of source grpah that composed this vertex
+//@n is amount of vertex that will be contarcted
+func (g *Graph)GetHungryContractedGraphNI(n int)(*Graph,[][]int){
+	//constract slice of tuples of this struct:@s.First is number of first vertex ,@s.Second is number of second vertex,
+	//@s.Third is size of edges overlap for vertex in tuple
+	//it contains all vertex pairs
+	pairSet := make([]gotuple.IntTuple,(g.AmountOfVertex()*(g.AmountOfVertex() - 1 ))/2)
+	it := 0
+
+	//fill set
+	for fv := 0 ; fv < g.AmountOfVertex(); fv++{
+		for sv := fv + 1 ; sv < g.AmountOfVertex();sv++{
+			//count edges overlap
+			counter := countSliceOverlap(g.GetEdges(fv),g.GetEdges(sv))
+			pairSet[it].First = fv
+			pairSet[it].Second = sv
+			pairSet[it].Third = counter
+			it++
+		}
+	}
+
+
+	//sort from low to high to hungry work
+	pairSet = gotuple.QuicksortIntTupleThird(pairSet)
+	
+	/*for _,i := range pairSet{
+		fmt.Print("[",i.First,",",i.Second,"]:",i.Third)
+	}*/
+
+
+	//constract set for contracting vertex
+	result := make([][]int,g.AmountOfVertex())
+	it = 0
+	for i,_ := range result{
+		result[i] = make([]int,1)
+		result[i][0] = i
+	}
+
+	//complite contract vertex in set
+	for i := len(pairSet) - 1; i > len(pairSet)-n-1;i--{
+		contractVertex(result,pairSet[i].First,pairSet[i].Second)
+	}
+
+	//constract graph with contracted vertex
+	return g.contractVertex(result)
+}
+
 //GetGraphWithOutEdge returns pointer to new graph that doesn't contain edges from @edgeSet
 func (g *Graph)GetGraphWithOutEdge(edgeSet ...gopair.IntPair)*Graph{
 	//init new void graph 
@@ -141,6 +282,85 @@ func (g *Graph)GetGraphWithOutEdge(edgeSet ...gopair.IntPair)*Graph{
 		newGraph.AddEdgesToVertex(i,edges)
 	}
 	return &newGraph
+}
+
+func countSliceOverlap(f []int,s []int)int{
+	counter := 0
+	for _,i := range s{
+		for _,j := range f{
+			if i == j{
+				//log.Println("counter increased")
+				counter++
+			}
+		}
+	}
+	return counter
+}
+
+func recursiveCheck(slice [][]int,check int)int{
+	if slice[check][0] == check{
+		return check
+	}else{
+		return recursiveCheck(slice,slice[check][0])
+	}
+}
+
+func contractVertex(set [][]int,v1 int,v2 int){
+	switch{
+	case set[v1][0] == v1 && set[v2][0] == v2:
+		set[v1] = appendWithOutRepeat(set[v1],set[v2])
+		set[v2] = []int{v1}
+	case set[v1][0] != v1 && set[v2][0] != v2:
+		contractVertex(set,set[v1][0],set[v2][0])
+	case set[v1][0] != v1 && set[v2][0] == v2 :
+		contractVertex(set,set[v1][0],v2)
+	case set[v1][0] == v1 && set[v2][0] != v2:
+		contractVertex(set,v1,set[v2][0])
+	}
+}
+
+func appendWithOutRepeat(s1 []int,s2 []int)[]int{
+	res := make([]int,len(s1))
+	copy(res,s1)
+	for _,j := range s2{
+		flag := true
+		for _,i := range s1{
+			if j == i{
+				flag = false
+			}
+		}
+
+		if flag {
+			res = append(res,j)
+		}
+	}
+
+	return res
+}
+
+func isContains(slice []int,a int)bool{
+	for _,j := range slice{
+		if j == a{
+			return true
+		}
+	}
+	return false
+}
+
+func removeRepeat(slice []int)[]int{
+	newSlice := make([]int,0)
+	for _,j := range slice{
+		flag := true
+		for _,i := range newSlice{
+			if i == j{
+				flag = false
+			}
+		}
+		if flag{
+			newSlice = append(newSlice,j)
+		}
+	}
+	return newSlice
 }
 /*func (g *Graph)DoEdgesWeight()(ord []int){
 	if g.AmountOfIndependent <= 0{
