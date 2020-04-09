@@ -284,6 +284,29 @@ func (g *Graph)GetGraphWithOutEdge(edgeSet ...gopair.IntPair)*Graph{
 	return &newGraph
 }
 
+func UncontractedGraphBipartition(contr [][]int,vec []bool)[]bool{
+	if len(contr) != len(vec){
+		return nil
+	}
+
+	n := 0
+	for _,j := range contr{
+		for i := 0; i < len(j);i++{
+			n++
+		}
+	}
+
+	result := make([]bool,n)
+
+	for i,r := range vec{
+		for _,v := range contr[i]{
+			result[v] = r
+		}
+	}
+
+	return result
+}
+
 func countSliceOverlap(f []int,s []int)int{
 	counter := 0
 	for _,i := range s{
