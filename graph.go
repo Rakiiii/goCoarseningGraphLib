@@ -250,6 +250,8 @@ func (g *Graph)GetHungryContractedGraphNI(n int)(*Graph,[][]int){
 	return g.contractVertex(result)
 }
 
+
+
 //GetGraphWithOutEdge returns pointer to new graph that doesn't contain edges from @edgeSet
 func (g *Graph)GetGraphWithOutEdge(edgeSet ...gopair.IntPair)*Graph{
 	//init new void graph 
@@ -284,6 +286,68 @@ func (g *Graph)GetGraphWithOutEdge(edgeSet ...gopair.IntPair)*Graph{
 	return &newGraph
 }
 
+//HungryFixBipartitionDisbalance
+func (g *Graph)HungryFixBipartitionDisbalance(vec []bool,groupSize int)[]bool{
+
+	tg := 0
+	fg := 0
+	for _,b := range vec{
+		if b{
+			tg++
+		}else{
+			fg++
+		}
+	}
+
+	var flag bool
+	switch  {
+	case tg>fg:
+		if groupSize - tg >= 0{
+			return vec
+		}
+		flag = true
+	case tg<fg:
+		if groupSize - fg >= 0{
+			return vec
+		}
+		flag = false
+	case fg == tg:
+		return vec
+	}
+
+	newVec := make([]bool,len(vec))
+	for i,j := range vec{
+		newVec[i] = j
+	}
+
+	vertex := -1
+	bestWeight := math.Inf(1)
+
+		for i := 0; i < g.AmountOfVertex(); i++{
+			if vec[i] == flag{
+				inEdges := 0
+				outEdges := 0
+				for _,v := range g.GetEdges(i){
+					if vec[i] == vec[v]{
+						inEdges ++ 
+					}else{
+						outEdges++
+					}
+				}
+				if bestWeight > float64(inEdges - outEdges){
+					bestWeight = float64(inEdges - outEdges)
+					vertex = i
+				}
+			}
+		}
+
+	newVec[vertex] = !newVec[vertex]
+
+	return g.HungryFixBipartitionDisbalance(newVec,groupSize)
+}
+
+//UncontractedGraphBipartition takes @contr which is matrix that returns by any contarction method and bipartition vector
+//returns bipartition vector for uncontracted graph
 func UncontractedGraphBipartition(contr [][]int,vec []bool)[]bool{
 	if len(contr) != len(vec){
 		return nil
