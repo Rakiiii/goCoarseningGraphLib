@@ -201,41 +201,70 @@ func (g *Graph)contractVertex(set [][]int)(*Graph,[][]int){
 	return newGraph,fixed
 }
 
+/*func (g *Graph)GetHungryContractedGraphNI(n int)(*Graph,[][]int){
+	//constract slice of tuples of this struct:@s.First is number of first vertex ,@s.Second is number of second vertex,
+	//@s.Third is size of edges overlap for vertex in tuple
+	//it contains all vertex pairs
+	pairSet := g.checkVertexNonIncedent(countSliceOverlap)
+
+	//sort from low to high to hungry work
+	pairSet = gotuple.QuicksortIntTupleThird(pairSet)
+	
+	//constract set for contracting vertex
+	result := make([][]int,g.AmountOfVertex())
+	for i,_ := range result{
+		result[i] = make([]int,1)
+		result[i][0] = i
+	}
+
+	//complite contract vertex in set
+	for i := len(pairSet) - 1; i > len(pairSet)-n-1;i--{
+		contractVertex(result,pairSet[i].First,pairSet[i].Second)
+	}
+
+	//constract graph with contracted vertex
+	return g.contractVertex(result)
+}*/
+
 //GetHungryContractedGraphNI returns pointer to graph of type Graph that composed from set of contaracted vertex
 //and matrix for uncotractiong vertex matrix strucutre:line number is num of vertex in new graph,and line it self contains 
 //number of vertex of source grpah that composed this vertex
 //@n is amount of vertex that will be contarcted
 func (g *Graph)GetHungryContractedGraphNI(n int)(*Graph,[][]int){
-	//constract slice of tuples of this struct:@s.First is number of first vertex ,@s.Second is number of second vertex,
+	return g.getHungryContractedGraph(n,checkVertexNonIncedent,countSliceOverlap,false)
+}
+
+func (g *Graph)GetHungryContractedGraphI(n int)(*Graph,[][]int){
+	return g.getHungryContractedGraph(n,checkVertexIncedent,countSliceOverlap,false)
+}
+
+func (g *Graph)GetHungryContractedGraphNIDiff(n int)(*Graph,[][]int){
+	return g.getHungryContractedGraph(n,checkVertexNonIncedent,countSliceDiff,true)
+}
+
+func (g *Graph)GetHungryContractedGraphIDiff(n int)(*Graph,[][]int){
+	return g.getHungryContractedGraph(n,checkVertexIncedent,countSliceDiff,true)
+}
+
+//getHungryContractedGraphNI returns cntracted graph graph and uncoctacting set 
+//vertex will be contracted hungry, value for hungry cintraction is @s.Thrid from []gotuple.IntTuple returnd by @getPairSet 
+//@s.First and @s.Second might be vertex pair for contraction
+//@getPairSet will resive @count as @c and g as @g
+func (g *Graph)getHungryContractedGraph(n int,getPairSet func(g *Graph,c func([]int,[]int)int)[]gotuple.IntTuple,count func([]int,[]int)int,doRevers bool)(*Graph,[][]int){
+		//constract slice of tuples of this struct:@s.First is number of first vertex ,@s.Second is number of second vertex,
 	//@s.Third is size of edges overlap for vertex in tuple
 	//it contains all vertex pairs
-	pairSet := make([]gotuple.IntTuple,(g.AmountOfVertex()*(g.AmountOfVertex() - 1 ))/2)
-	it := 0
-
-	//fill set
-	for fv := 0 ; fv < g.AmountOfVertex(); fv++{
-		for sv := fv + 1 ; sv < g.AmountOfVertex();sv++{
-			//count edges overlap
-			counter := countSliceOverlap(g.GetEdges(fv),g.GetEdges(sv))
-			pairSet[it].First = fv
-			pairSet[it].Second = sv
-			pairSet[it].Third = counter
-			it++
-		}
-	}
-
+	pairSet := getPairSet(g,count)
 
 	//sort from low to high to hungry work
 	pairSet = gotuple.QuicksortIntTupleThird(pairSet)
+
+	if doRevers{
+		pairSet = gotuple.ReversIntTupleSlice(pairSet)
+	}
 	
-	/*for _,i := range pairSet{
-		fmt.Print("[",i.First,",",i.Second,"]:",i.Third)
-	}*/
-
-
 	//constract set for contracting vertex
 	result := make([][]int,g.AmountOfVertex())
-	it = 0
 	for i,_ := range result{
 		result[i] = make([]int,1)
 		result[i][0] = i
@@ -250,6 +279,56 @@ func (g *Graph)GetHungryContractedGraphNI(n int)(*Graph,[][]int){
 	return g.contractVertex(result)
 }
 
+
+//checkVertexNonIncedent checks all vertex pairs in graph and make tuplets:@t.First:first vertex number @t.Second:second vertex number
+//@t.Third: reuslt of count(g.GetEdges(t.First),g.GetEdges(t.Second))
+func checkVertexNonIncedent(g *Graph,count func([]int,[]int)int)[]gotuple.IntTuple{
+	//constract slice of tuples of this struct:@s.First is number of first vertex ,@s.Second is number of second vertex,
+	//@s.Third is size of edges overlap for vertex in tuple
+	//it contains all vertex pairs
+	pairSet := make([]gotuple.IntTuple,(g.AmountOfVertex()*(g.AmountOfVertex() - 1 ))/2)
+	it := 0
+
+	//fill set
+	for fv := 0 ; fv < g.AmountOfVertex(); fv++{
+		for sv := fv + 1 ; sv < g.AmountOfVertex();sv++{
+			//count vertex stats
+			counter := count(g.GetEdges(fv),g.GetEdges(sv))
+			pairSet[it].First = fv
+			pairSet[it].Second = sv
+			pairSet[it].Third = counter
+			it++
+		}
+	}
+
+	return pairSet
+}
+
+//checkVertexIncedent checks incedent vertex pairs in graph and make tuplets:@t.First:first vertex number @t.Second:second vertex number
+//@t.Third: reuslt of count(g.GetEdges(t.First),g.GetEdges(t.Second))
+func checkVertexIncedent(g *Graph,count func([]int,[]int)int)[]gotuple.IntTuple{
+	//constract slice of tuples of this struct:@s.First is number of first vertex ,@s.Second is number of second vertex,
+	//@s.Third is size of edges overlap for vertex in tuple
+	//it contains all vertex pairs
+	pairSet := make([]gotuple.IntTuple,g.AmountOfEdges())
+	it :=0
+	
+	for fv := 0 ; fv < g.AmountOfVertex(); fv++{
+		for _,sv := range g.GetEdges(fv){
+			//if pair is not still counted
+			if checkTupleSetContainment(pairSet,fv,sv){
+				//count edges stats
+				counter := count(g.GetEdges(fv),g.GetEdges(sv))
+				pairSet[it].First = fv
+				pairSet[it].Second = sv
+				pairSet[it].Third = counter
+				it++
+			}
+		}
+	}
+
+	return pairSet
+}
 
 
 //GetGraphWithOutEdge returns pointer to new graph that doesn't contain edges from @edgeSet
@@ -371,6 +450,18 @@ func UncontractedGraphBipartition(contr [][]int,vec []bool)[]bool{
 	return result
 }
 
+//checkTupleSetContainment checking is @set contains pair [@f;@s]
+//return true if contains else false
+func checkTupleSetContainment(set []gotuple.IntTuple,f int,s int)bool{
+	for _,t := range set{
+		if (t.First == f && t.Second == s) || (t.First == s && t.Second == f){
+			return true
+		}
+	}
+	return false
+}
+
+//countSliceOverlap returns size of elemnt overlap between @g and @s
 func countSliceOverlap(f []int,s []int)int{
 	counter := 0
 	for _,i := range s{
@@ -384,6 +475,40 @@ func countSliceOverlap(f []int,s []int)int{
 	return counter
 }
 
+func countSliceDiff(f []int,s []int)int{
+	counter := 0
+	flag := true
+	for _,i := range s{
+		flag = true
+		for _,j := range f{
+			if i == j{
+				//log.Println("counter increased")
+				flag = false
+			}
+		}
+		if flag{
+			counter++
+		}
+	}
+
+	for _,i := range f{
+		flag = true
+		for _,j := range s{
+			if i == j{
+				//log.Println("counter increased")
+				flag = false
+			}
+		}
+		if flag{
+			counter++
+		}
+	}
+
+	return counter
+}
+
+
+//recursiveCheck recursiv finding number int in @slice[i]
 func recursiveCheck(slice [][]int,check int)int{
 	if slice[check][0] == check{
 		return check
@@ -391,6 +516,7 @@ func recursiveCheck(slice [][]int,check int)int{
 		return recursiveCheck(slice,slice[check][0])
 	}
 }
+
 
 func contractVertex(set [][]int,v1 int,v2 int){
 	switch{
@@ -451,31 +577,3 @@ func removeRepeat(slice []int)[]int{
 	}
 	return newSlice
 }
-/*func (g *Graph)DoEdgesWeight()(ord []int){
-	if g.AmountOfIndependent <= 0{
-		ord = g.HungryNumIndependent()
-	}else{
-		for i := 0; i < g.AmountOfVertex();i++{
-			ord = append(ord,i)
-		}
-	}
-
-	g.weightMatrix = make([][]float64,g.AmountOfVertex())
-	for i,_ := range g.weightMatrix{
-		g.weightMatrix[i] = make([]float64,g.AmountOfVertex())
-	}
-
-	for i := 0; i < g.AmountOfVertex();i++{
-		counter := 0
-		for _,j := range g.GetEdges(i){
-			if j < g.AmountOfIndependent{
-				counter ++
-			}
-		}
-		for _,j := range g.GetEdges(i){
-			if j < g.AmountOfIndependent{
-				weightMatrix[i][j] = 1/counter
-			}
-		}
-	}
-}*/

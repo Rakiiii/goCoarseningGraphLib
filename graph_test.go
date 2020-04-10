@@ -5,6 +5,7 @@ import(
 	"fmt"
 	"log"
 	"os"
+	gotuple "github.com/Rakiiii/goTuple"
 	gopair "github.com/Rakiiii/goPair"
 	bipartitonlocalsearchlib "github.com/Rakiiii/goBipartitonLocalSearch"
 )
@@ -403,4 +404,50 @@ func TestCuatom(t *testing.T){
 				//need to fix disbalance
 				sol.Vector = contractgraph.HungryFixBipartitionDisbalance(UncontractedGraphBipartition(contr,mark.Vector),groupSize)
 			}
+}
+
+func TestConutSliceDiff(t *testing.T){
+	fmt.Println("Start TestConutSliceDiff")
+
+	slice1 := []int{1,2,3,4,5}
+	slice2 := []int{4,5,6,7,8}
+
+	if countSliceDiff(slice1,slice2) != 6{
+		t.Error("Wrong slice differense size:",countSliceDiff(slice1,slice2)," expected:6")
+	}else{
+		fmt.Println("TestConutSliceDiff=[ok]")
+	}
+}
+
+func TestCheckTupleSetContainment(t *testing.T){
+	fmt.Println("Start CheckTupleSetContainment")
+
+	set := []gotuple.IntTuple{gotuple.IntTuple{First:1,Second:2,Third:0},gotuple.IntTuple{First:3,Second:4,Third:0},
+	gotuple.IntTuple{First:1,Second:3,Third:0},gotuple.IntTuple{First:5,Second:8,Third:0}}
+
+	checkFlag := true
+
+	if !checkTupleSetContainment(set,1,2){
+		t.Error("Wrong result at [1,2]")
+		checkFlag = false
+	}
+	
+	if checkTupleSetContainment(set,1,5){
+		t.Error("Wrong result at [1,5]")
+		checkFlag = false
+	} 
+
+	if !checkTupleSetContainment(set,4,3){
+		t.Error("Wrong result at [4,3]")
+		checkFlag = false
+	} 
+
+	if checkTupleSetContainment(set,3,8){
+		t.Error("Wrong result at [3,8]")
+		checkFlag = false
+	} 
+
+	if checkFlag{
+		fmt.Println("TestCheckTupleSetContainment=[ok]")
+	}
 }
