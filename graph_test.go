@@ -382,21 +382,34 @@ func TestCuatom(t *testing.T){
 	sol := &bipartitonlocalsearchlib.Solution{Value:-1,Vector:make([]bool,graph.AmountOfVertex()),Gr:&graph.Graph} 
 	sol.Init(&graph.Graph)
 
-	depSize := 10
+	depSize := 9
 			
 			fmt.Println("start mark serach with hungry ni contracted graph")
-			groupSize := graph.AmountOfVertex()/2
 			contractgraph := Graph{Graph:graph.Graph}
 			coarsedNumber := graph.AmountOfVertex()-graph.GetAmountOfIndependent() - depSize
 			fmt.Println("coarsed number is:",coarsedNumber)
 			if coarsedNumber > 0{
-				contractedGraph,contr := contractgraph.GetHungryContractedGraphNI(coarsedNumber)
+				contractedGraph,contr := contractgraph.GetHungryContractedGraphI(coarsedNumber)
+
+				groupSize := contractedGraph.AmountOfVertex()/2 + contractedGraph.AmountOfVertex()%2
+				
+				fmt.Println("groupSize:",groupSize)
+				contractedGraph.Print()
 				
 				subOrd := contractedGraph.HungryNumIndependent()
 
 
+
+
 				mark := bipartitonlocalsearchlib.LSPartiotionAlgorithmNonRec(&contractedGraph.Graph, nil, groupSize)
  
+				if mark == nil{
+					fmt.Println("mark is nil")
+				}
+				if subOrd == nil{
+					fmt.Println("subOrd is nil")
+				}
+
 				mark.Vector = bipartitonlocalsearchlib.TranslateResultVector(mark.Vector,subOrd)
 
 				fmt.Println("cont:",contr)

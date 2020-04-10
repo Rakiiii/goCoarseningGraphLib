@@ -256,6 +256,10 @@ func (g *Graph)getHungryContractedGraph(n int,getPairSet func(g *Graph,c func([]
 	//it contains all vertex pairs
 	pairSet := getPairSet(g,count)
 
+	/*for pos,i := range pairSet{
+		fmt.Println("[",i.First,";",i.Second,"]:",i.Third," at pos:",pos)
+	}*/
+
 	//sort from low to high to hungry work
 	pairSet = gotuple.QuicksortIntTupleThird(pairSet)
 
@@ -310,19 +314,26 @@ func checkVertexIncedent(g *Graph,count func([]int,[]int)int)[]gotuple.IntTuple{
 	//constract slice of tuples of this struct:@s.First is number of first vertex ,@s.Second is number of second vertex,
 	//@s.Third is size of edges overlap for vertex in tuple
 	//it contains all vertex pairs
-	pairSet := make([]gotuple.IntTuple,g.AmountOfEdges())
-	it :=0
+	//pairSet := make([]gotuple.IntTuple,g.AmountOfEdges())
+	//it :=0
+	pairSet := make([]gotuple.IntTuple,0)
 	
 	for fv := 0 ; fv < g.AmountOfVertex(); fv++{
 		for _,sv := range g.GetEdges(fv){
 			//if pair is not still counted
-			if checkTupleSetContainment(pairSet,fv,sv){
+			if !checkTupleSetContainment(pairSet,fv,sv){
 				//count edges stats
 				counter := count(g.GetEdges(fv),g.GetEdges(sv))
-				pairSet[it].First = fv
+				/*pairSet[it].First = fv
 				pairSet[it].Second = sv
 				pairSet[it].Third = counter
-				it++
+				it++*/
+				var newPair gotuple.IntTuple
+				newPair.First = fv
+				newPair.Second = sv
+				newPair.Third = counter
+				pairSet = append(pairSet,newPair)
+				//fmt.Println("add pair [",fv,";",sv,"]:",counter)
 			}
 		}
 	}
