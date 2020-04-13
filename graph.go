@@ -9,6 +9,10 @@ import (
 	//"fmt"
 )
 
+
+var	NonIncedentCofs = [...]int{0,65,65,60,58,55,54,53,50,48,46,44,42,41,40,39,38,37,35,36,34,40,65,100,0}
+var IncedentCofs = [...]int{0,0,62,90,82,81,80,79,79,77,72,70,66,61,60,55,50,52,42,38,46,44,59,100}
+
 type Graph struct{
 	lspartitioninglib.Graph
 	weightMatrix [][]float64
@@ -242,8 +246,12 @@ func (g *Graph)GetHungryContractedGraphNIDiff(n int)(*Graph,[][]int){
 	return g.getHungryContractedGraph(n,checkVertexNonIncedent,countSliceDiff,true)
 }
 
+func (g *Graph)GetHungryContractedGraphNIDiffCoff(n int)(*Graph,[][]int){
+	return g.getHungryContractedGraph(n,checkVertexNonIncedent,countSliceDiffCoffNI,false)
+}
+
 func (g *Graph)GetHungryContractedGraphIDiff(n int)(*Graph,[][]int){
-	return g.getHungryContractedGraph(n,checkVertexIncedent,countSliceDiff,true)
+	return g.getHungryContractedGraph(n,checkVertexIncedent,countSliceDiffCoffI,false)
 }
 
 //getHungryContractedGraphNI returns cntracted graph graph and uncoctacting set 
@@ -516,6 +524,24 @@ func countSliceDiff(f []int,s []int)int{
 	}
 
 	return counter
+}
+
+func countSliceDiffCoffNI(f []int,s []int)int{
+	counter := countSliceDiff(f,s)
+	if counter >= len(NonIncedentCofs){
+		return 0
+	} else{
+		return NonIncedentCofs[counter]
+	}
+}
+
+func countSliceDiffCoffI(f []int,s []int)int{
+	counter := countSliceDiff(f,s)
+	if counter >= len(IncedentCofs){
+		return 0
+	} else{
+		return IncedentCofs[counter]
+	}
 }
 
 
