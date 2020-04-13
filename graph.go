@@ -251,6 +251,10 @@ func (g *Graph)GetHungryContractedGraphNIDiffCoff(n int)(*Graph,[][]int){
 }
 
 func (g *Graph)GetHungryContractedGraphIDiff(n int)(*Graph,[][]int){
+	return g.getHungryContractedGraph(n,checkVertexIncedent,countSliceDiff,true)
+}
+
+func (g *Graph)GetHungryContractedGraphIDiffCoff(n int)(*Graph,[][]int){
 	return g.getHungryContractedGraph(n,checkVertexIncedent,countSliceDiffCoffI,false)
 }
 
