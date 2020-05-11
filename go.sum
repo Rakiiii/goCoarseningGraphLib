@@ -8,6 +8,9 @@ github.com/Rakiiii/goBipartitonLocalSearch v0.5.3 h1:Cy03HD1J7dPevjxLXOANrTW96O2
 github.com/Rakiiii/goBipartitonLocalSearch v0.5.3/go.mod h1:Linmf+HYOwxhQFscf5lZWDuJZFrfiAUnx2bHTR+VwJM=
 github.com/Rakiiii/goBipartitonLocalSearch v0.5.5 h1:Yq1LP8IETVzmcv5kzS5vReJQZ2gTiNzyv6yvpJ5l3kI=
 github.com/Rakiiii/goBipartitonLocalSearch v0.5.5/go.mod h1:pk2c62DBilpxilTjpbaAjbyIOC2YOCKO2CW0/R1fP1A=
+github.com/Rakiiii/goBipartitonLocalSearch v0.6.0 h1:Fpk8+nLzKC8jfwCcXD3rkUbuoEJRRCMegNBKF19/je8=
+github.com/Rakiiii/goBipartitonLocalSearch v0.6.0/go.mod h1:N2ib0miM5DK5uC9ANKQzizIudwI64iRUsF3Hv8fwGA8=
+github.com/Rakiiii/goCoarseningGraphLib v0.1.2/go.mod h1:68JYfqvNFQ4e2dihqR0Ud+fW+Jd1py1qvPjYDQ8ij70=
 github.com/Rakiiii/goGraph v0.2.4 h1:lR6LyuVySOCb25rWZBr/XXPPS7KIaPuO8JjJ2xD3PhM=
 github.com/Rakiiii/goGraph v0.2.4/go.mod h1:bYAV6bGI3W/Q2pbO8wpCVywSbfjNNbvQ41WEdop3YAI=
 github.com/Rakiiii/goGraph v0.3.0 h1:uQ+34dDdDgTXBFt7jsCjyq3DdXOYXi5hijE7r2B40Ds=
