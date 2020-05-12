@@ -92,7 +92,7 @@ func readCoarsing(av int) ([][]int, error) {
 				contractVertex(result, i, j)
 			}
 		}
-		pos += av - i
+		pos += av - i - 1
 	}
 	return result, nil
 }
