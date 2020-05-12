@@ -256,7 +256,7 @@ func (g *Graph) GetHungryContractedGraphIDiffCoff(n int) (*Graph, [][]int) {
 	return g.getHungryContractedGraph(n, checkVertexIncedent, countSliceDiffCoffI, false)
 }
 
-func (g *Graph) GetContractedWithLinRegGraph(n int) (*Graph, [][]int, error) {
+func (g *Graph) GetContractedWithLinRegGraph() (*Graph, [][]int, error) {
 	createRawResultFile()
 	collectRawData(g)
 
