@@ -85,13 +85,14 @@ func readCoarsing(av int) ([][]int, error) {
 	scanner.Scan()
 	partition := strings.Fields(scanner.Text())
 
+	pos := 0
 	for i := 0; i < av; i++ {
 		for j := i + 1; j < av; j++ {
-			pos := (j - i - 1) + i*av
-			if partition[pos] == "1" {
+			if partition[pos+(j-i-1)] == "1" {
 				contractVertex(result, i, j)
 			}
 		}
+		pos += av - i
 	}
 	return result, nil
 }
