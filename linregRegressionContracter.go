@@ -5,7 +5,6 @@ import (
 	"encoding/csv"
 	"log"
 	"os"
-	"os/exec"
 	"strconv"
 	"strings"
 )
@@ -67,24 +66,6 @@ func collectRawData(graph *Graph) {
 		}
 	}
 	GlobalWriter.Flush()
-}
-
-func (g *Graph) GetContractedWithLinRegGraph(n int) (*Graph, [][]int, error) {
-	createRawResultFile()
-	collectRawData(g)
-
-	model := exec.Command("bash", "-c", "python "+linergPath)
-	if err := model.Run(); err != nil {
-		return nil, nil, err
-	}
-
-	set, err := readCoarsing(g.AmountOfVertex())
-	if err != nil {
-		return nil, nil, err
-	}
-
-	gr, ord := g.contractVertex(set)
-	return gr, ord, nil
 }
 
 func readCoarsing(av int) ([][]int, error) {
