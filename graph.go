@@ -2,10 +2,12 @@ package coarseninggraph
 
 import (
 	"math"
+	"os"
 	"os/exec"
 
 	lspartitioninglib "github.com/Rakiiii/goBipartitonLocalSearch"
 	gopair "github.com/Rakiiii/goPair"
+	permatchlib "github.com/Rakiiii/goPerfectMathcingLib"
 	gosort "github.com/Rakiiii/goSort"
 	gotuple "github.com/Rakiiii/goTuple"
 )
@@ -228,6 +230,22 @@ func (g *Graph) contractVertex(set [][]int) (*Graph, [][]int) {
 	return g.contractVertex(result)
 }*/
 
+//GetPerfectlyContractedGraph return pointer to graph with contracted by perfect matching vertexes
+func (g *Graph) GetPerfectlyContractedGraph(perfectMatcher permatchlib.IPerfectMatcher) (*Graph, [][]int, error) {
+	perfectMatching, err := perfectMatcher.GetPerfectMatching(g)
+	if err != nil {
+		return nil, nil, err
+	}
+	set := make([][]int, g.AmountOfVertex())
+	for _, i := range perfectMatching {
+		set[i.First] = []int{i.First, i.Second}
+		set[i.Second] = []int{i.First}
+	}
+
+	newGraph, order := g.contractVertex(set)
+	return newGraph, order, nil
+}
+
 //GetHungryContractedGraphNI returns pointer to graph of type Graph that composed from set of contaracted vertex
 //and matrix for uncotractiong vertex matrix strucutre:line number is num of vertex in new graph,and line it self contains
 //number of vertex of source grpah that composed this vertex
@@ -261,6 +279,8 @@ func (g *Graph) GetContractedWithLinRegGraph() (*Graph, [][]int, error) {
 	collectRawData(g)
 
 	model := exec.Command("bash", "-c", "python "+linergPath)
+	model.Stderr = os.Stderr
+	model.Stdout = os.Stdout
 	if err := model.Run(); err != nil {
 		return nil, nil, err
 	}
@@ -269,6 +289,8 @@ func (g *Graph) GetContractedWithLinRegGraph() (*Graph, [][]int, error) {
 	if err != nil {
 		return nil, nil, err
 	}
+
+	//fmt.Println(set)
 
 	gr, ord := g.contractVertex(set)
 	return gr, ord, nil

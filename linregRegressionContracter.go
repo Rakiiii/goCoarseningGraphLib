@@ -3,6 +3,7 @@ package coarseninggraph
 import (
 	"bufio"
 	"encoding/csv"
+	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -88,7 +89,9 @@ func readCoarsing(av int) ([][]int, error) {
 	pos := 0
 	for i := 0; i < av; i++ {
 		for j := i + 1; j < av; j++ {
+			fmt.Println("|" + partition[pos+(j-i-1)] + "|")
 			if partition[pos+(j-i-1)] == "1" {
+				fmt.Println("CONTRACTING ", i, " AND ", j)
 				contractVertex(result, i, j)
 			}
 		}
