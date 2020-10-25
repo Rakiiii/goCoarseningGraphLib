@@ -16,8 +16,18 @@ var NonIncedentCofs = [...]int{0, 65, 65, 60, 58, 55, 54, 53, 50, 48, 46, 44, 42
 var IncedentCofs = [...]int{0, 0, 62, 90, 82, 81, 80, 79, 79, 77, 72, 70, 66, 61, 60, 55, 50, 52, 42, 38, 46, 44, 59, 100}
 
 type Graph struct {
-	lspartitioninglib.Graph
+	lspartitioninglib.IGraph
 	weightMatrix [][]float64
+}
+
+//NewGraph construct new graph for coarsing from lspartiooning graph
+func NewGraphAny() *Graph {
+	return &Graph{IGraph: lspartitioninglib.NewGraph(), weightMatrix: make([][]float64, 0)}
+}
+
+//NewGraph construct new graph for coarsing from lspartiooning graph
+func NewGraph(baseGraph lspartitioninglib.IGraph) *Graph {
+	return &Graph{IGraph: baseGraph, weightMatrix: make([][]float64, 0)}
 }
 
 //SetEdgesWeight set weight for edges
@@ -166,7 +176,7 @@ func (g *Graph) contractVertex(set [][]int) (*Graph, [][]int) {
 	}
 
 	//init graph with contracted vertex
-	newGraph := new(Graph)
+	newGraph := NewGraphAny()
 	newGraph.Init(len(fixed), 0)
 
 	//add edges to this grpah
@@ -393,7 +403,7 @@ func checkVertexIncedent(g *Graph, count func([]int, []int) int) []gotuple.IntTu
 //GetGraphWithOutEdge returns pointer to new graph that doesn't contain edges from @edgeSet
 func (g *Graph) GetGraphWithOutEdge(edgeSet ...gopair.IntPair) *Graph {
 	//init new void graph
-	var newGraph Graph
+	newGraph := *NewGraphAny()
 	newGraph.Init(g.AmountOfVertex(), 0)
 
 	//found edges to delete

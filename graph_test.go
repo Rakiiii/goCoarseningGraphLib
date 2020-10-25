@@ -30,7 +30,7 @@ func TestGetGraphWithOutEdge(t *testing.T) {
 
 	fmt.Println("Start TestGetGraphWithOutEdge")
 
-	var graph Graph
+	graph := *NewGraphAny()
 	//testgraph
 	if err := graph.ParseGraph("GetGraphWithOutEdge"); err != nil {
 		log.Println(err)
@@ -51,7 +51,7 @@ func TestGetGraphWithOutEdge(t *testing.T) {
 	edges[3].First = 8
 	edges[3].Second = 6
 
-	var graph2 Graph
+	graph2 := NewGraphAny()
 	//testgraphed
 	if err := graph2.ParseGraph("GetGraphWithOutEdgeResult"); err != nil {
 		log.Println(err)
@@ -77,13 +77,13 @@ func TestGetGraphWithOutEdge(t *testing.T) {
 
 func TestGetCoarseningGraph(t *testing.T) {
 	fmt.Println("Start TestGetCoarseningGraph")
-	var graphnc Graph
+	graphnc := NewGraphAny()
 	//testgraphnc
 	if err := graphnc.ParseGraph("GetCoarseningGraph"); err != nil {
 		log.Println(err)
 		return
 	}
-	var graphc Graph
+	graphc := NewGraphAny()
 	//testgraphc
 	if err := graphc.ParseGraph("GetCoarseningGraphResult"); err != nil {
 		log.Println(err)
@@ -234,12 +234,12 @@ func TestRemoveRepeat(t *testing.T) {
 func TestContractVertexGraph(t *testing.T) {
 	fmt.Println("Start TestContractVertexGraph")
 
-	var graphStart Graph
+	graphStart := NewGraphAny()
 	if err := graphStart.ParseGraph("ContractVertex"); err != nil {
 		log.Println(err)
 		return
 	}
-	var graphRes Graph
+	graphRes := NewGraphAny()
 	if err := graphRes.ParseGraph("ContractVertexResult"); err != nil {
 		log.Println(err)
 		return
@@ -279,12 +279,12 @@ func TestContractVertexGraph(t *testing.T) {
 func TestGetHungryContractedGraphNI(t *testing.T) {
 	fmt.Println("Start GetHungryContractedGraphNI")
 
-	var graphStart Graph
+	graphStart := NewGraphAny()
 	if err := graphStart.ParseGraph("GetHungryContractedGraphNI"); err != nil {
 		log.Println(err)
 		return
 	}
-	var graphRes Graph
+	graphRes := NewGraphAny()
 	if err := graphRes.ParseGraph("GetHungryContractedGraphNIResult"); err != nil {
 		log.Println(err)
 		return
@@ -345,7 +345,7 @@ func TestUncontractedGraphBipartition(t *testing.T) {
 func TestHungryFixBipartitionDisbalance(t *testing.T) {
 	fmt.Println("Start TestHungryFixBipartitionDisbalance")
 
-	var graphStart Graph
+	graphStart := NewGraphAny()
 	if err := graphStart.ParseGraph("HungryFixBipartitionDisbalance"); err != nil {
 		log.Println(err)
 		return
@@ -373,19 +373,19 @@ func TestHungryFixBipartitionDisbalance(t *testing.T) {
 func TestCuatom(t *testing.T) {
 	t.Skip()
 	fmt.Println("Start TestCustom")
-	var graph Graph
+	graph := NewGraphAny()
 	if err := graph.ParseGraph("../graph"); err != nil {
 		log.Println(err)
 		return
 	}
 
-	sol := &bipartitonlocalsearchlib.Solution{Value: -1, Vector: make([]bool, graph.AmountOfVertex()), Gr: &graph.Graph}
-	sol.Init(&graph.Graph)
+	sol := &bipartitonlocalsearchlib.Solution{Value: -1, Vector: make([]bool, graph.AmountOfVertex()), Gr: graph.IGraph}
+	sol.Init(graph.IGraph)
 
 	depSize := 9
 
 	fmt.Println("start mark serach with hungry ni contracted graph")
-	contractgraph := Graph{Graph: graph.Graph}
+	contractgraph := Graph{IGraph: graph.IGraph}
 	coarsedNumber := graph.AmountOfVertex() - graph.GetAmountOfIndependent() - depSize
 	fmt.Println("coarsed number is:", coarsedNumber)
 	if coarsedNumber > 0 {
@@ -398,7 +398,7 @@ func TestCuatom(t *testing.T) {
 
 		subOrd := contractedGraph.HungryNumIndependent()
 
-		mark := bipartitonlocalsearchlib.LSPartiotionAlgorithmNonRec(&contractedGraph.Graph, nil, groupSize)
+		mark := bipartitonlocalsearchlib.LSPartiotionAlgorithmNonRec(contractedGraph.IGraph, nil, groupSize)
 
 		if mark == nil {
 			fmt.Println("mark is nil")
@@ -419,7 +419,7 @@ func TestCuatom(t *testing.T) {
 func TestGetPerfectlyContractedGraph(t *testing.T) {
 	fmt.Println("Start TestGetPerfectlyContractedGraph")
 
-	var graphStart Graph
+	graphStart := NewGraphAny()
 	if err := graphStart.ParseGraph("GetHungryContractedGraphNI"); err != nil {
 		log.Println(err)
 		return
@@ -427,14 +427,21 @@ func TestGetPerfectlyContractedGraph(t *testing.T) {
 
 	graphStart.Print()
 
-	graph, _, err := graphStart.GetPerfectlyContractedGraph(permatchlib.NewRandomMatcher())
+	fixedVertexes := []gopair.IntPair{{First: 0, Second: 4}, {First: 2, Second: 7}}
+
+	graph, ord, err := graphStart.GetPerfectlyContractedGraph(permatchlib.NewRandomMathcerWithFixedVertexes(fixedVertexes))
 	if err != nil {
 		fmt.Println(err)
 		t.Error(err)
 		return
 	}
 
+	fmt.Println("Contracted graph")
 	graph.Print()
+	fmt.Println("new order")
+	for _, i := range ord {
+		fmt.Print(i, " ")
+	}
 
 	fmt.Println("TestGetPerfectlyContractedGraph=[ok]")
 
@@ -487,8 +494,9 @@ func TestCheckTupleSetContainment(t *testing.T) {
 }
 
 func TestLinRegCoarsing(t *testing.T) {
+	t.Skip()
 	fmt.Println("start lin reg test")
-	var graphStart Graph
+	graphStart := NewGraphAny()
 	if err := graphStart.ParseGraph("TestLinRegGraph"); err != nil {
 		log.Println(err)
 		return

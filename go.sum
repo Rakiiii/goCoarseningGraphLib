@@ -12,6 +12,8 @@ github.com/Rakiiii/goBipartitonLocalSearch v0.5.5 h1:Yq1LP8IETVzmcv5kzS5vReJQZ2g
 github.com/Rakiiii/goBipartitonLocalSearch v0.5.5/go.mod h1:pk2c62DBilpxilTjpbaAjbyIOC2YOCKO2CW0/R1fP1A=
 github.com/Rakiiii/goBipartitonLocalSearch v0.6.0 h1:Fpk8+nLzKC8jfwCcXD3rkUbuoEJRRCMegNBKF19/je8=
 github.com/Rakiiii/goBipartitonLocalSearch v0.6.0/go.mod h1:N2ib0miM5DK5uC9ANKQzizIudwI64iRUsF3Hv8fwGA8=
+github.com/Rakiiii/goBipartitonLocalSearch v0.9.2 h1:vCSR2tsmY5xPh7oJCjmikTos+NG7JEQ6pQ37c7whwFg=
+github.com/Rakiiii/goBipartitonLocalSearch v0.9.2/go.mod h1:9skehf5D7J4b/JiLGz1005tzQ8pTF7AswqWv/eqEWWk=
 github.com/Rakiiii/goBoolMatrix v0.4.1/go.mod h1:pM30IPgEAv/W+/icjlUR0C5y4lU7ck4WnXOpIuOFae8=
 github.com/Rakiiii/goCoarseningGraphLib v0.1.2/go.mod h1:68JYfqvNFQ4e2dihqR0Ud+fW+Jd1py1qvPjYDQ8ij70=
 github.com/Rakiiii/goGraph v0.2.4 h1:lR6LyuVySOCb25rWZBr/XXPPS7KIaPuO8JjJ2xD3PhM=
@@ -29,6 +31,10 @@ github.com/Rakiiii/goPerfectMathcingLib v0.0.2 h1:vDcwxbWrMjYPYlDQS7QIFo6qEMHD5/
 github.com/Rakiiii/goPerfectMathcingLib v0.0.2/go.mod h1:VSljCzGaxdOV7kM7o1kbhWCr6eCOBl31XHF16cSNftg=
 github.com/Rakiiii/goPerfectMathcingLib v0.0.3 h1:r1KE1bdtdhiu9lVDepjyLd+oXI9Fvqu9FRhENl9XO7g=
 github.com/Rakiiii/goPerfectMathcingLib v0.0.3/go.mod h1:VSljCzGaxdOV7kM7o1kbhWCr6eCOBl31XHF16cSNftg=
+github.com/Rakiiii/goPerfectMathcingLib v0.0.4 h1:5bgocBNmb+NrHtodYI2RM/ilrAHJYludl5dkOBLcuzA=
+github.com/Rakiiii/goPerfectMathcingLib v0.0.4/go.mod h1:VSljCzGaxdOV7kM7o1kbhWCr6eCOBl31XHF16cSNftg=
+github.com/Rakiiii/goPerfectMathcingLib v0.0.5 h1:FxVVrskWIyE0ctiE/aTHRz7aHOz29KzxdoYjCB0WbHc=
+github.com/Rakiiii/goPerfectMathcingLib v0.0.5/go.mod h1:VSljCzGaxdOV7kM7o1kbhWCr6eCOBl31XHF16cSNftg=
 github.com/Rakiiii/goSort v0.0.1/go.mod h1:ir50upjpORk43rGVd9Kt43JRoCWmtWiLmqEKnmO3EPw=
 github.com/Rakiiii/goSort v0.0.3 h1:s2wswcUQWi1d24UOPJ+w2YgmDHa9bDXn46JOi0dI1D0=
 github.com/Rakiiii/goSort v0.0.3/go.mod h1:ir50upjpORk43rGVd9Kt43JRoCWmtWiLmqEKnmO3EPw=
