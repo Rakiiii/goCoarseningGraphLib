@@ -428,7 +428,7 @@ func TestGetPerfectlyContractedGraph(t *testing.T) {
 
 	graphStart.Print()
 
-	fixedVertexes := []gopair.IntPair{{First: 0, Second: 6}, {First: 3, Second: 4}}
+	fixedVertexes := []gopair.IntPair{{First: 0, Second: 6}, {First: 2, Second: 5}}
 	matcher := permatchlib.NewRandomMathcerWithFixedVertexes(fixedVertexes)
 	graph, ord, err := graphStart.GetPerfectlyContractedGraph(matcher, matcher)
 	if err != nil {
