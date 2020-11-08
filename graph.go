@@ -242,11 +242,15 @@ func (g *Graph) contractVertex(set [][]int) (*Graph, [][]int) {
 }*/
 
 //GetPerfectlyContractedGraph return pointer to graph with contracted by perfect matching vertexes
-func (g *Graph) GetPerfectlyContractedGraph(perfectMatcher permatchlib.IPerfectMatcher) (*Graph, [][]int, error) {
+func (g *Graph) GetPerfectlyContractedGraph(perfectMatcher permatchlib.IPerfectMatcher, perfectChecker permatchlib.IPerfectMatcherChecker) (*Graph, [][]int, error) {
+	if !perfectChecker.IsPerfectMatchingExist(g) {
+		return nil, nil, permatchlib.NoPerfectMatching
+	}
 	perfectMatching, err := perfectMatcher.GetPerfectMatching(g)
 	if err != nil {
 		return nil, nil, err
 	}
+	fmt.Println(perfectMatching)
 	set := make([][]int, g.AmountOfVertex())
 	for _, i := range perfectMatching {
 		set[i.First] = []int{i.First, i.Second}

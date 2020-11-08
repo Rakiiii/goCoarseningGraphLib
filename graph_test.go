@@ -421,19 +421,16 @@ func TestGetPerfectlyContractedGraph(t *testing.T) {
 	fmt.Println("Start TestGetPerfectlyContractedGraph")
 
 	graphStart := NewGraphAny()
-	if err := graphStart.ParseGraph(benchGraph); err != nil {
+	if err := graphStart.ParseGraph("GetHungryContractedGraphNI"); err != nil {
 		log.Println(err)
 		return
 	}
 
 	graphStart.Print()
 
-	fixedVertexes := []gopair.IntPair{{First: 5, Second: 16}, {First: 9, Second: 23}}
+	fixedVertexes := []gopair.IntPair{{First: 0, Second: 6}, {First: 3, Second: 4}}
 	matcher := permatchlib.NewRandomMathcerWithFixedVertexes(fixedVertexes)
-	if !matcher.IsPerfectMatchingExist(graphStart) {
-		t.Error("Perfect matching does not exist")
-	}
-	graph, ord, err := graphStart.GetPerfectlyContractedGraph(matcher)
+	graph, ord, err := graphStart.GetPerfectlyContractedGraph(matcher, matcher)
 	if err != nil {
 		fmt.Println(err)
 		t.Error(err)
