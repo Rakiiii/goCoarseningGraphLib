@@ -1,6 +1,7 @@
 package coarseninggraph
 
 import (
+	"fmt"
 	"math"
 	"os"
 	"os/exec"
@@ -251,6 +252,8 @@ func (g *Graph) GetPerfectlyContractedGraph(perfectMatcher permatchlib.IPerfectM
 		set[i.First] = []int{i.First, i.Second}
 		set[i.Second] = []int{i.First}
 	}
+
+	fmt.Println(set)
 
 	newGraph, order := g.contractVertex(set)
 	return newGraph, order, nil

@@ -13,7 +13,8 @@ import (
 )
 
 const (
-	testdir = "Testgraphs"
+	testdir    = "Testgraphs"
+	benchGraph = "graph_bench_1"
 )
 
 func TestDir(t *testing.T) {
@@ -420,16 +421,19 @@ func TestGetPerfectlyContractedGraph(t *testing.T) {
 	fmt.Println("Start TestGetPerfectlyContractedGraph")
 
 	graphStart := NewGraphAny()
-	if err := graphStart.ParseGraph("GetHungryContractedGraphNI"); err != nil {
+	if err := graphStart.ParseGraph(benchGraph); err != nil {
 		log.Println(err)
 		return
 	}
 
 	graphStart.Print()
 
-	fixedVertexes := []gopair.IntPair{{First: 0, Second: 4}, {First: 2, Second: 7}}
-
-	graph, ord, err := graphStart.GetPerfectlyContractedGraph(permatchlib.NewRandomMathcerWithFixedVertexes(fixedVertexes))
+	fixedVertexes := []gopair.IntPair{{First: 5, Second: 16}, {First: 9, Second: 23}}
+	matcher := permatchlib.NewRandomMathcerWithFixedVertexes(fixedVertexes)
+	if !matcher.IsPerfectMatchingExist(graphStart) {
+		t.Error("Perfect matching does not exist")
+	}
+	graph, ord, err := graphStart.GetPerfectlyContractedGraph(matcher)
 	if err != nil {
 		fmt.Println(err)
 		t.Error(err)
