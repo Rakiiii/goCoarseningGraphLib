@@ -1,7 +1,6 @@
 package coarseninggraph
 
 import (
-	"fmt"
 	"math"
 	"os"
 	"os/exec"
@@ -244,12 +243,10 @@ func (g *Graph) contractVertex(set [][]int) (*Graph, [][]int) {
 //GetPerfectlyContractedGraph return pointer to graph with contracted by perfect matching vertexes
 func (g *Graph) GetPerfectlyContractedGraph(perfectMatcher permatchlib.IPerfectMatcher, perfectChecker permatchlib.IPerfectMatcherChecker) (*Graph, [][]int, error) {
 	if !perfectChecker.IsPerfectMatchingExist(g) {
-		fmt.Println("Out on precheck of perfect matching existing")
 		return nil, nil, permatchlib.NoPerfectMatching
 	}
 	perfectMatching, err := perfectMatcher.GetPerfectMatching(g)
 	if err != nil {
-		fmt.Println("Out on perfect matching finding alg")
 		return nil, nil, err
 	}
 	set := make([][]int, g.AmountOfVertex())
