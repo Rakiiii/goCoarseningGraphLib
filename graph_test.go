@@ -426,7 +426,9 @@ func TestGetPerfectlyContractedGraph(t *testing.T) {
 		return
 	}
 
-	//graphStart.Print()
+	graphStart.HungryNumIndependent()
+
+	// graphStart.Print()
 
 	fixedVertexes := []gopair.IntPair{{First: 0, Second: 13}, {First: 4, Second: 28}, {First: 1, Second: 15}, {First: 2, Second: 25}, {First: 3, Second: 20}, {First: 5, Second: 16}, {First: 6, Second: 24}, {First: 7, Second: 23}, {First: 8, Second: 19}, {First: 9, Second: 21}, {First: 10, Second: 29}, {First: 11, Second: 17}, {First: 12, Second: 18}, {First: 14, Second: 26}, {First: 22, Second: 27}}
 	matcher := permatchlib.NewRandomMathcerWithFixedVertexes(fixedVertexes)

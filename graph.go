@@ -252,14 +252,11 @@ func (g *Graph) GetPerfectlyContractedGraph(perfectMatcher permatchlib.IPerfectM
 		fmt.Println("Out on perfect matching finding alg")
 		return nil, nil, err
 	}
-	fmt.Println(perfectMatching)
 	set := make([][]int, g.AmountOfVertex())
 	for _, i := range perfectMatching {
 		set[i.First] = []int{i.First, i.Second}
 		set[i.Second] = []int{i.First}
 	}
-
-	fmt.Println(set)
 
 	newGraph, order := g.contractVertex(set)
 	return newGraph, order, nil
