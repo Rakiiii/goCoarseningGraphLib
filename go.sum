@@ -14,6 +14,8 @@ github.com/Rakiiii/goBipartitonLocalSearch v0.6.0 h1:Fpk8+nLzKC8jfwCcXD3rkUbuoEJ
 github.com/Rakiiii/goBipartitonLocalSearch v0.6.0/go.mod h1:N2ib0miM5DK5uC9ANKQzizIudwI64iRUsF3Hv8fwGA8=
 github.com/Rakiiii/goBipartitonLocalSearch v0.9.2 h1:vCSR2tsmY5xPh7oJCjmikTos+NG7JEQ6pQ37c7whwFg=
 github.com/Rakiiii/goBipartitonLocalSearch v0.9.2/go.mod h1:9skehf5D7J4b/JiLGz1005tzQ8pTF7AswqWv/eqEWWk=
+github.com/Rakiiii/goBipartitonLocalSearch v0.10.1 h1:ZDfaqnwmUwJHNlCkgrIpdZfkhZsAxDTaPmuRtiZgz7o=
+github.com/Rakiiii/goBipartitonLocalSearch v0.10.1/go.mod h1:zF9J+wMriyx2u70739BFCRUM9oWJNYKRmkkaxP6wzEg=
 github.com/Rakiiii/goBoolMatrix v0.4.1/go.mod h1:pM30IPgEAv/W+/icjlUR0C5y4lU7ck4WnXOpIuOFae8=
 github.com/Rakiiii/goCoarseningGraphLib v0.1.2/go.mod h1:68JYfqvNFQ4e2dihqR0Ud+fW+Jd1py1qvPjYDQ8ij70=
 github.com/Rakiiii/goGraph v0.2.4 h1:lR6LyuVySOCb25rWZBr/XXPPS7KIaPuO8JjJ2xD3PhM=
@@ -24,6 +26,8 @@ github.com/Rakiiii/goGraph v0.3.1 h1:KzwaZu5ljzS607b6jS2BttNwixFn3WUQj1cqD4v1J8M
 github.com/Rakiiii/goGraph v0.3.1/go.mod h1:KvIo/2YIIHJOCeMhZrVkymK9s2PSsjUJ3zh0EOEy1yU=
 github.com/Rakiiii/goGraph v0.3.2 h1:m0ehCEeo5FeqFprkLkgk+daGjOZgsKIBP8ztf1TkeI8=
 github.com/Rakiiii/goGraph v0.3.2/go.mod h1:KvIo/2YIIHJOCeMhZrVkymK9s2PSsjUJ3zh0EOEy1yU=
+github.com/Rakiiii/goGraph v0.4.0 h1:Tm9DKdpt9HZp8IfStuKAvmw5k0UQ6yIf896yP1bDrrw=
+github.com/Rakiiii/goGraph v0.4.0/go.mod h1:KvIo/2YIIHJOCeMhZrVkymK9s2PSsjUJ3zh0EOEy1yU=
 github.com/Rakiiii/goPair v0.0.2/go.mod h1:Jjb6f/SlM8GV5ySxvfySDs8UCOjtx5CJtmUoffpLD9I=
 github.com/Rakiiii/goPair v0.0.3 h1:96VjJnyvRpueXMZdnZ5HDOJdFO3mNOpCYsxTzIdpq8M=
 github.com/Rakiiii/goPair v0.0.3/go.mod h1:Jjb6f/SlM8GV5ySxvfySDs8UCOjtx5CJtmUoffpLD9I=

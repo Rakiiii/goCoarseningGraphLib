@@ -25,6 +25,11 @@ func NewGraphAny() *Graph {
 	return &Graph{IGraph: lspartitioninglib.NewGraph(), weightMatrix: make([][]float64, 0)}
 }
 
+//NewGraph construct new graph for coarsing from lspartiooning graphFast
+func NewGraphFast() *Graph {
+	return &Graph{IGraph: lspartitioninglib.NewGraphFast(), weightMatrix: make([][]float64, 0)}
+}
+
 //NewGraph construct new graph for coarsing from lspartiooning graph
 func NewGraph(baseGraph lspartitioninglib.IGraph) *Graph {
 	return &Graph{IGraph: baseGraph, weightMatrix: make([][]float64, 0)}
